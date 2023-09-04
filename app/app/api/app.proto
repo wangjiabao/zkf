@@ -247,6 +247,8 @@ message UserInfoRequest {
 
 message UserInfoReply {
 	string address = 1; // 地址
+	int64 zkfPrice = 103;
+	int64 zkfPriceBase = 104;
 	int64 level = 2; // vip
 	int64 useVip = 102; // 1vip账户0普通账户
 	int64 levelOk = 101; // 有效用户1，无效0
@@ -304,8 +306,7 @@ message UserInfoReply {
 	message List {
 		string created_at = 1;
 		string amount = 2;
-		string amountMax = 4; // 认购usdt金额
-		string amountZkf = 3; // zkf金额
+		string amountMax = 4; // zkf金额
 		int64 term = 5;
 	}
 

@@ -117,7 +117,6 @@ type LocationNew struct {
 	Status            string
 	Current           int64
 	CurrentMax        int64
-	CurrentZkf        int64
 	StopLocationAgain int64
 	StopCoin          int64
 	CurrentMaxNew     int64
@@ -473,7 +472,8 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 		level2Price         int64
 		level3Price         int64
 		level4Price         int64
-		csdPrice            int64
+		zkfPrice            int64
+		zkfPriceBase        int64
 		withdrawDestroyRate int64
 		withdrawRate        int64
 		term                int64
@@ -487,7 +487,7 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 
 	// 配置
 	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
-		"term", "level_2_price", "level_1_price", "level_3_price", "level_4_price", "csd_price",
+		"term", "level_2_price", "level_1_price", "level_3_price", "level_4_price", "zkf_price",
 		"withdraw_destroy_rate", "withdraw_rate", "vip_0_balance",
 	)
 	if nil != configs {
@@ -495,8 +495,11 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 			if "term" == vConfig.KeyName {
 				term, _ = strconv.ParseInt(vConfig.Value, 10, 64)
 			}
-			if "csd_price" == vConfig.KeyName {
-				csdPrice, _ = strconv.ParseInt(vConfig.Value, 10, 64)
+			if "zkf_price" == vConfig.KeyName {
+				zkfPrice, _ = strconv.ParseInt(vConfig.Value, 10, 64)
+			}
+			if "zkf_price_base" == vConfig.KeyName {
+				zkfPriceBase, _ = strconv.ParseInt(vConfig.Value, 10, 64)
 			}
 			if "level_4_price" == vConfig.KeyName {
 				level4Price, _ = strconv.ParseInt(vConfig.Value, 10, 64)
@@ -548,7 +551,6 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 				Amount:    fmt.Sprintf("%.2f", float64(v.Usdt)/float64(10000000000)),
 				Term:      v.Term,
 				AmountMax: fmt.Sprintf("%.2f", float64(v.CurrentMax)/float64(10000000000)),
-				AmountZkf: fmt.Sprintf("%.2f", float64(v.CurrentZkf)/float64(10000000000)),
 			})
 		}
 
@@ -897,11 +899,13 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 		Level1Price:                       level1Price,
 		Level2Price:                       level2Price,
 		Level3Price:                       level3Price,
-		Level1Csd:                         fmt.Sprintf("%.4f", float64(level1Price*csdPrice)/1000),
+		ZkfPrice:                          zkfPrice,
+		ZkfPriceBase:                      zkfPriceBase,
+		Level1Csd:                         "",
 		Level4Price:                       level4Price,
-		Level2Csd:                         fmt.Sprintf("%.4f", float64(level2Price*csdPrice)/1000),
-		Level3Csd:                         fmt.Sprintf("%.4f", float64(level3Price*csdPrice)/1000),
-		Level4Csd:                         fmt.Sprintf("%.4f", float64(level4Price*csdPrice)/1000),
+		Level2Csd:                         "",
+		Level3Csd:                         "",
+		Level4Csd:                         "",
 		WithdrawRate:                      withdrawRate,
 		WithdrawDestroyRate:               withdrawDestroyRate,
 		TotalHbs:                          fmt.Sprintf("%.2f", float64(userRewardHbsTotal)/float64(10000000000)),

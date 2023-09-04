@@ -728,6 +728,12 @@ components:
             properties:
                 address:
                     type: string
+                zkfPrice:
+                    type: integer
+                    format: int64
+                zkfPriceBase:
+                    type: integer
+                    format: int64
                 level:
                     type: integer
                     format: int64
@@ -918,8 +924,6 @@ components:
                 amount:
                     type: string
                 amountMax:
-                    type: string
-                amountZkf:
                     type: string
                 term:
                     type: integer

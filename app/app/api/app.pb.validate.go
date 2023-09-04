@@ -828,6 +828,10 @@ func (m *UserInfoReply) validate(all bool) error {
 
 	// no validation rules for Address
 
+	// no validation rules for ZkfPrice
+
+	// no validation rules for ZkfPriceBase
+
 	// no validation rules for Level
 
 	// no validation rules for UseVip
@@ -7674,8 +7678,6 @@ func (m *UserInfoReply_List) validate(all bool) error {
 	// no validation rules for Amount
 
 	// no validation rules for AmountMax
-
-	// no validation rules for AmountZkf
 
 	// no validation rules for Term
 

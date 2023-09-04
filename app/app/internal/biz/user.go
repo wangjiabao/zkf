@@ -440,11 +440,11 @@ func (uuc *UserUseCase) UpdateUserRecommend(ctx context.Context, u *User, req *v
 
 func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoReply, error) {
 	var (
-		myUser                   *User
-		userInfo                 *UserInfo
-		locations                []*LocationNew
-		userBalance              *UserBalance
-		userBalanceLock          *UserBalance
+		myUser      *User
+		userInfo    *UserInfo
+		locations   []*LocationNew
+		userBalance *UserBalance
+		//userBalanceLock          *UserBalance
 		userRecommend            *UserRecommend
 		userRecommends           []*UserRecommend
 		userRewards              []*Reward
@@ -583,10 +583,10 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 	if nil != err {
 		return nil, err
 	}
-	userBalanceLock, err = uuc.ubRepo.GetUserBalanceLock(ctx, myUser.ID)
-	if nil != err {
-		return nil, err
-	}
+	//userBalanceLock, err = uuc.ubRepo.GetUserBalanceLock(ctx, myUser.ID)
+	//if nil != err {
+	//	return nil, err
+	//}
 
 	userRecommend, err = uuc.urRepo.GetUserRecommendByUserId(ctx, myUser.ID)
 	if nil == userRecommend {
@@ -854,18 +854,18 @@ func (uuc *UserUseCase) UserInfo(ctx context.Context, user *User) (*v1.UserInfoR
 	}
 
 	return &v1.UserInfoReply{
-		Address:                  myUser.Address,
-		Level:                    userInfo.Vip,
-		UseVip:                   userInfo.UseVip,
-		LevelOk:                  levelOk,
-		Amount:                   amount,
-		DepositList:              depositList,
-		TeamCsdBalance:           fmt.Sprintf("%.2f", float64(userInfo.TeamCsdBalance)/float64(10000000000)),
-		AmountAll:                fmt.Sprintf("%.2f", float64(amountAll)/float64(10000000000)),
-		BalanceZkf:               fmt.Sprintf("%.2f", float64(userBalance.BalanceUsdt)/float64(10000000000)),
-		BalanceDhb:               fmt.Sprintf("%.2f", float64(userBalance.BalanceDhb)/float64(10000000000)),
-		BalanceUsdtLock:          fmt.Sprintf("%.4f", float64(userBalanceLock.BalanceUsdt)/float64(10000000000)),
-		BalanceDhbLock:           fmt.Sprintf("%.4f", float64(userBalanceLock.BalanceDhb)/float64(10000000000)),
+		Address:        myUser.Address,
+		Level:          userInfo.Vip,
+		UseVip:         userInfo.UseVip,
+		LevelOk:        levelOk,
+		Amount:         amount,
+		DepositList:    depositList,
+		TeamCsdBalance: fmt.Sprintf("%.2f", float64(userInfo.TeamCsdBalance)/float64(10000000000)),
+		AmountAll:      fmt.Sprintf("%.2f", float64(amountAll)/float64(10000000000)),
+		BalanceZkf:     fmt.Sprintf("%.2f", float64(userBalance.BalanceUsdt)/float64(10000000000)),
+		BalanceDhb:     fmt.Sprintf("%.2f", float64(userBalance.BalanceDhb)/float64(10000000000)),
+		//BalanceUsdtLock:          fmt.Sprintf("%.4f", float64(userBalanceLock.BalanceUsdt)/float64(10000000000)),
+		//BalanceDhbLock:           fmt.Sprintf("%.4f", float64(userBalanceLock.BalanceDhb)/float64(10000000000)),
 		InviteUrl:                encodeString,
 		InviteUserAddress:        inviteUserAddress,
 		RecommendNum:             userInfo.HistoryRecommend,
